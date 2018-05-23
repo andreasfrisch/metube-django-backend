@@ -53,4 +53,32 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
-          
+  
+  deploy:
+    docker:
+      - image: circleci/python:3.6.1
+      
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Build docker container and push it
+          command: |
+            docker build -t metube/basic2 backend/
+            docker tag metube/basic2:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/basic2:latest
+            docker push 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/basic2:latest
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
