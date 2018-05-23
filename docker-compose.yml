@@ -3,6 +3,8 @@ version: '3'
 services:
   nginx:
     build: ./nginx
+    # restart: always
+    # image: nginx:latest
     ports:
       - "80:80"
     depends_on:
@@ -10,3 +12,18 @@ services:
 
   metube:
     build: ./backend
+    # restart: always
+    # image: metube:latest
+    # command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn mydjango.wsgi -b 0.0.0.0:8000"
+    # depends_on:
+      # - db
+    # volumes:
+      # - ./src:/src
+    # expose:
+      # - "8000"
+    # ports:
+      # - "8000:8000"
+
+  # db:
+    # image: mysql:latest
+    # container_name: ps01

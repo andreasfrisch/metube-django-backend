@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from metube.views import RootPageView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', RootPageView.as_view(), name='root'),
 ]
