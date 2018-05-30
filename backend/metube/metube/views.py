@@ -15,6 +15,7 @@ class RootPageView(View):
             <body>
                 <h1>Greetings to the world</h1>
                 <p>Hello, world!</p>
+                <p>This is a test</p>
             </body>
             </html>
         ''')
