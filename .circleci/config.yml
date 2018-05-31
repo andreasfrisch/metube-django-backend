@@ -75,9 +75,13 @@ jobs:
       - run:
           name: Build docker container and push it
           command: |
-            docker build -t metube/basic2 backend/
-            docker tag metube/basic2:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/basic2:latest
-            docker push 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/basic2:latest
+            docker build -t metube/api backend/
+            docker tag metube/api:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/api:latest
+            docker push 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/api:latest
+            
+            docker build -t metube/nginx nginx/
+            docker tag metube/nginx:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/nginx:latest
+            docker push 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/nginx:latest
   
   deploy:
     docker:
