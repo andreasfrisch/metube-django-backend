@@ -8,9 +8,9 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - metube
+      - api
 
-  metube:
+  api:
     build: ./backend
     # restart: always
     # image: metube:latest
