@@ -1,7 +1,9 @@
 import boto3
 import time
 
-client = boto3.client('ecs')
+client = boto3.client('ecs',
+    region_name='eu-central-1'
+)
 
 response = client.update_service(
     cluster='metube',
