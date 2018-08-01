@@ -3,6 +3,8 @@ import textwrap
 from django.http import HttpResponse
 from django.views.generic.base import View
 
+from metube.secret_settings import _ENVIRONMENT
+
 
 class RootPageView(View):
 
@@ -14,9 +16,8 @@ class RootPageView(View):
             </head>
             <body>
                 <h1>Greetings to the world</h1>
-                <p>Hello, world!</p>
-                <p>This is a test 8</p>
+                <p>Environment: %s</p>
             </body>
             </html>
-        ''')
+        ''' % _ENVIRONMENT)
         return HttpResponse(response_text)
