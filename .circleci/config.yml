@@ -92,10 +92,14 @@ jobs:
       - run:
          name: install boto3
          command: |
+           python3 -m venv venv
+           . venv/bin/activate
            pip install boto3
       - run:
          name: "Force redeployment"
-         command: python restart-service-task.py
+         command: |
+           . venv/bin/activate
+           python restart-service-task.py
 
 workflows:
   version: 2
