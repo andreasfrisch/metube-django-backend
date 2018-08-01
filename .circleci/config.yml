@@ -24,8 +24,6 @@ jobs:
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "backend/requirements.txt" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
       
       - run:
           name: install dependencies
@@ -73,7 +71,7 @@ jobs:
          name: "Log in to AWS ECR"
          command: eval $(aws ecr get-login --region eu-central-1 --no-include-email)
       - run:
-          name: Build docker container and push it
+          name: Build docker containers and push it
           command: |
             docker build -t metube/api backend/
             docker tag metube/api:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/api:latest
@@ -91,6 +89,18 @@ jobs:
     
     steps:
       - checkout
+      - run:
+         name: install aws
+         command: |
+           curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+           unzip awscli-bundle.zip
+           sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+      - run:
+         name: "Log in to AWS ECR"
+         command: eval $(aws ecr get-login --region eu-central-1 --no-include-email)
+      - run:
+         name: "Force redeployment"
+         command: python restart-service-task.py
 
 workflows:
   version: 2
