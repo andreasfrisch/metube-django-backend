@@ -99,7 +99,7 @@ jobs:
          name: "Force redeployment"
          command: |
            . venv/bin/activate
-           python restart-service-task.py
+           python restart-service-tasks.py
 
 workflows:
   version: 2
