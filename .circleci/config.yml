@@ -73,7 +73,7 @@ jobs:
       - run:
           name: Build docker containers and push it
           command: |
-            aws s3 cp s3://django-metube/config/secrets_dev.py backend/metube/metube/secret_settings.py
+            aws s3 cp s3://django-metube/config/production_settings.py backend/metube/metube/secret_settings.py
             docker build -t metube/api backend/
             docker tag metube/api:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/api:latest
             docker push 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/api:latest
