@@ -28,4 +28,4 @@ EXPOSE 8000
 
 WORKDIR /app/metube
 
-ENTRYPOINT ["/usr/local/bin/gunicorn","-b","0.0.0.0:8000","metube.wsgi:application"]
+ENTRYPOINT ["/usr/local/bin/gunicorn","-b","127.0.0.1:8000","metube.wsgi:application"]
