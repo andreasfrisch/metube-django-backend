@@ -11,12 +11,12 @@ services:
       - api
 
   api:
-    build: ./backend
+    # build: ./backend
     # restart: always
-    # image: metube:latest
+    image: metube:latest
     # command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn mydjango.wsgi -b 0.0.0.0:8000"
-    # depends_on:
-      # - db
+    depends_on:
+      - database
     # volumes:
       # - ./src:/src
     # expose:
@@ -24,6 +24,12 @@ services:
     # ports:
       # - "8000:8000"
 
-  # db:
-    # image: mysql:latest
-    # container_name: ps01
+  database:
+    image: mysql:5.7.19
+    environment:
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=mysql
+      - MYSQL_DATABASE=metube
+      - MYSQL_ROOT_PASSWORD=secret
+    ports:
+      - 19090:3306
