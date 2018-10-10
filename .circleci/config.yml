@@ -55,13 +55,6 @@ jobs:
     steps:
       - checkout
       - setup-remote-docker
-      
-      - run:
-         name: Install Docker Compose
-         command: |
-           curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-           chmod +x ~/docker-compose
-           sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - run:
          name: install aws
          command: |
@@ -69,22 +62,22 @@ jobs:
            unzip awscli-bundle.zip
            sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
       - run:
+          name: Update settings with secrets
+          command: |
+            aws s3 cp s3://django-metube/config/production_settings.py backend/metube/metube/settings/settings.py
+      - run:
          name: "Log in to AWS ECR"
          command: eval $(aws ecr get-login --region eu-central-1 --no-include-email)
       - run:
           name: Build docker containers and push it
           command: |
-            aws s3 cp s3://django-metube/config/production_settings.py backend/metube/metube/settings/settings.py
+            docker build -t metube-api:latest backend/
+            docker build -t metube-nginx:latest nginx/
             
-            docker build -t metube/api backend/
-            docker-compose up -d
-            docker-compose exec api python manage.py migrate
-            
-            docker tag metube/api:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/api:latest
+            docker tag metube-api:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/api:latest
             docker push 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/api:latest
             
-            docker build -t metube/nginx nginx/
-            docker tag metube/nginx:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/nginx:latest
+            docker tag metube-nginx:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/nginx:latest
             docker push 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/nginx:latest
   
   deploy:
@@ -115,10 +108,10 @@ workflows:
       - push-image:
           requires:
             - build
-          filters:
-            branches:
-              only:
-                - master
+          # filters:
+            # branches:
+              # only:
+                # - master
       - deploy:
           requires:
             - push-image

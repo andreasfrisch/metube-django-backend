@@ -11,8 +11,8 @@ SECRET_KEY = 'u!kw$drrafj^mc-@8!_(pdj-@87)@xp06nd7d&#_ab2$(moe4a'
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
-AWS_ACCESS_KEY_ID = 'AKIAJTBGPBZ54JDETV3Q'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = 'something'
+AWS_SECRET_ACCESS_KEY = 'orother'
 
 DATABASES = {
     'default': {
