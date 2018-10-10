@@ -2,8 +2,9 @@ import textwrap
 
 from django.http import HttpResponse
 from django.views.generic.base import View
+from django.shortcuts import render
 
-from metube.secret_settings import _ENVIRONMENT
+from metube.settings.settings import ENVIRONMENT
 
 
 class RootPageView(View):
@@ -19,5 +20,12 @@ class RootPageView(View):
                 <p>Environment: %s</p>
             </body>
             </html>
-        ''' % _ENVIRONMENT)
+        ''' % ENVIRONMENT)
         return HttpResponse(response_text)
+
+def home(request):
+    """
+    Handle request for main page
+    """
+    template = "index.html"
+    return render(request, template)
