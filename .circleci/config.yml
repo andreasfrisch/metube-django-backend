@@ -41,7 +41,7 @@ jobs:
           command: |
             . venv/bin/activate
             python backend/metube/manage.py migrate --settings=metube.settings.test
-            python backend/metube/manage.py test --settings=metube.settings.test
+            cd backend/metube; python manage.py test --settings=metube.settings.test
       
       - store_artifacts:
           path: test-reports
