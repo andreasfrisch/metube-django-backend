@@ -41,12 +41,10 @@ jobs:
       - run:
           name: run tests
           command: |
-            docker build -t metube backend/
             docker-compose up -d
-            docker-compose exec api python manage.py migrate
-            docker-compose exec api python manage.py test
-            # . venv/bin/activate
-            # python backend/metube/manage.py test --settings=metube.settings.test
+            . venv/bin/activate
+            python backend/metube/manage.py migrate --settings=metube.settings.test
+            python backend/metube/manage.py test --settings=metube.settings.test
       
       - store_artifacts:
           path: test-reports
