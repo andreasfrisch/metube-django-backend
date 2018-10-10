@@ -19,7 +19,6 @@ jobs:
     
     steps:
       - checkout
-      - setup-remote-docker
       
       - restore_cache:
           keys:
@@ -31,7 +30,6 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r backend/requirements.txt
-            pip install docker-compose
       
       - save_cache:
           paths:
@@ -41,7 +39,6 @@ jobs:
       - run:
           name: run tests
           command: |
-            docker-compose up -d
             . venv/bin/activate
             python backend/metube/manage.py migrate --settings=metube.settings.test
             python backend/metube/manage.py test --settings=metube.settings.test
