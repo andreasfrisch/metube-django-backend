@@ -31,22 +31,21 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r backend/requirements.txt
+            pip install docker-compose
       
       - save_cache:
           paths:
             - ./venv
           key: v1-dependencies-{{ checksum "backend/requirements.txt" }}
         
-      # run tests!
-      # this example uses Django's built-in test-runner
-      # other common Python testing frameworks include pytest and nose
-      # https://pytest.org
-      # https://nose.readthedocs.io
       - run:
           name: run tests
           command: |
-            . venv/bin/activate
-            python backend/metube/manage.py test --settings=metube.settings.test
+            docker-compose up -d
+            docker-compose exec api python manage.py migrate
+            docker-compose exec api python manage.py test
+            # . venv/bin/activate
+            # python backend/metube/manage.py test --settings=metube.settings.test
       
       - store_artifacts:
           path: test-reports
@@ -62,11 +61,12 @@ jobs:
       - checkout
       - setup-remote-docker
       - run:
-         name: install aws
+         name: install aws and docker-compose
          command: |
            curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
            unzip awscli-bundle.zip
            sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+           pip install docker-compose
       - run:
          name: "Log in to AWS ECR"
          command: eval $(aws ecr get-login --region eu-central-1 --no-include-email)
@@ -76,6 +76,9 @@ jobs:
             aws s3 cp s3://django-metube/config/production_settings.py backend/metube/metube/settings/settings.py
             
             docker build -t metube/api backend/
+            docker-compose up -d
+            docker-compose exec api python manage.py migrate
+            
             docker tag metube/api:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/api:latest
             docker push 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/api:latest
             
