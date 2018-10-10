@@ -46,7 +46,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            python backend/metube/manage.py test
+            python backend/metube/manage.py test --settings=metube.settings.test
       
       - store_artifacts:
           path: test-reports
