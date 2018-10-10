@@ -2,9 +2,9 @@ version: '2.1'
 
 services:
   nginx:
-    build: ./nginx
+    # build: ./nginx
     # restart: always
-    # image: nginx:latest
+    image: metube-nginx:latest
     ports:
       - "80:80"
     depends_on:
@@ -13,7 +13,7 @@ services:
   api:
     # build: ./backend
     # restart: always
-    image: metube:latest
+    image: metube-api:latest
     # command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn mydjango.wsgi -b 0.0.0.0:8000"
     depends_on:
       database:

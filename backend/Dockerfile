@@ -13,4 +13,4 @@ WORKDIR /app/metube
 
 EXPOSE 8000
 
-ENTRYPOINT ["/usr/local/bin/gunicorn","-b","0.0.0.0:8000","metube.wsgi:application"]
+ENTRYPOINT ["./docker_entrypoint.sh"]

@@ -101,10 +101,3 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-MEDIAFILES_LOCATION = 'media-staging'
-DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
-
-AWS_DEFAULT_ACL = None
-AWS_STORAGE_BUCKET_NAME = 'metube-web-frontend'
-AWS_S3_REGION_NAME = 'eu-central-1'  # e.g. us-east-2
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME

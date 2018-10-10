@@ -1,7 +1,8 @@
 All: start
 
 build:
-	docker build -t metube backend/
+	docker build -t metube-api backend/
+	docker build -t metube-nginx nginx/
 
 test:
 	python backend/metube/manage.py migrate --settings=metube.settings.test
