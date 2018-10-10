@@ -4,6 +4,7 @@ build:
 	docker build -t metube backend/
 
 test:
+	python backend/metube/manage.py migrate --settings=metube.settings.test
 	cd backend/metube && python manage.py test --settings=metube.settings.test
 
 start: build
