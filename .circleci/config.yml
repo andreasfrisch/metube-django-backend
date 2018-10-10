@@ -55,13 +55,19 @@ jobs:
     steps:
       - checkout
       - setup-remote-docker
+      
       - run:
-         name: install aws and docker-compose
+         name: Install Docker Compose
+         command: |
+           curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+           chmod +x ~/docker-compose
+           sudo mv ~/docker-compose /usr/local/bin/docker-compose
+      - run:
+         name: install aws
          command: |
            curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
            unzip awscli-bundle.zip
            sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-           pip install docker-compose
       - run:
          name: "Log in to AWS ECR"
          command: eval $(aws ecr get-login --region eu-central-1 --no-include-email)
