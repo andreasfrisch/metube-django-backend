@@ -2,7 +2,7 @@
 Test suite for blog app
 """
 from django.test import TestCase
-from backend.blog.models import Post
+from metube.blog.models import Post
 
 class ArchiveTestCase(TestCase):
     def setUp(self):

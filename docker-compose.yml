@@ -1,4 +1,4 @@
-version: '3'
+version: '2.1'
 
 services:
   nginx:
@@ -16,7 +16,9 @@ services:
     image: metube:latest
     # command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn mydjango.wsgi -b 0.0.0.0:8000"
     depends_on:
-      - database
+      database:
+        condition: service_healthy
+
     # volumes:
       # - ./src:/src
     # expose:
@@ -30,6 +32,10 @@ services:
       - MYSQL_USER=mysql
       - MYSQL_PASSWORD=mysql
       - MYSQL_DATABASE=metube
-      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=itsasecret
     ports:
       - 19090:3306
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 20s
+        retries: 10
