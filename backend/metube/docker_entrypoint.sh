@@ -11,8 +11,8 @@ python manage.py collectstatic --noinput
 echo Starting Gunicorn.
 exec gunicorn metube.wsgi:application \
     --name metube-django \
-    --bind 0.0.0.0:8000 \
+    --bind 0.0.0.0:8000
     # --log-level=info \
     # --log-file=/srv/logs/gunicorn.log \
     # --access-logfile=/srv/logs/access.log \
-    "$@"
+    # "$@"
