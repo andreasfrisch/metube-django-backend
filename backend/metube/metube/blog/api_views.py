@@ -5,6 +5,7 @@ Request handlers for blog API
 import json
 
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from datetime import datetime
 from metube.utils import json_response, token_required
@@ -50,9 +51,9 @@ def create_post(request):
             content=paragraphs_json_to_string(post_data['paragraphs'])
         ).save()
         return HttpResponse(status=200)
-
     return HttpResponse(status=405)
 
+@csrf_exempt
 def posts(request):
     """
     Get a list of all blog posts as JSON
@@ -61,3 +62,5 @@ def posts(request):
         return json_response([post.as_dict(with_content=False) for post in Post.objects.all()])
     elif request.method == "POST":
         return create_post(request)
+    else:
+        return HttpResponse(status=500)
