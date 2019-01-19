@@ -18,4 +18,5 @@ stop:
 development:
 	cd backend/metube && python manage.py makemigrations --settings=metube.settings.test
 	cd backend/metube && python manage.py migrate --settings=metube.settings.test
+	cd backend/metube && python manage.py createsuperuser --settings=metube.settings.test
 	cd backend/metube && python manage.py runserver --settings=metube.settings.test

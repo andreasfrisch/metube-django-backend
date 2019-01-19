@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.generic.base import View
 from django.shortcuts import render
 
-from metube.settings.settings import ENVIRONMENT
+from metube.settings.settings import VERSION, ENVIRONMENT
 
 
 class RootPageView(View):
@@ -17,6 +17,7 @@ class RootPageView(View):
             </head>
             <body>
                 <h1>Greetings to the world</h1>
+                <h2>Version: %s</h2>
                 <p>Environment: %s</p>
             </body>
             </html>

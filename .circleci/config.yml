@@ -2,56 +2,42 @@
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
+
+setup: &default
+    docker:
+      - image: circleci/python:3.6.1
+    working_directory: ~/repo
+
 version: 2
 jobs:
   build:
-    docker:
-      # specify the version you desire here
-      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
-      - image: circleci/python:3.6.1
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-    
-    working_directory: ~/repo
-    
+    <<: *default
     steps:
-      - checkout
-      
+      - checkout    
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "backend/requirements.txt" }}
-      
       - run:
           name: install dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
             pip install -r backend/requirements.txt
-      
       - save_cache:
           paths:
             - ./venv
           key: v1-dependencies-{{ checksum "backend/requirements.txt" }}
-        
       - run:
           name: run tests
           command: |
             . venv/bin/activate
             make test
-      
       - store_artifacts:
           path: test-reports
           destination: test-reports
   
   push-image:
-    docker:
-      - image: circleci/python:3.6.1
-      
-    working_directory: ~/repo
-    
+    <<: *default
     steps:
       - checkout
       - setup-remote-docker
@@ -81,11 +67,7 @@ jobs:
             docker push 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/nginx:latest
   
   deploy:
-    docker:
-      - image: circleci/python:3.6.1
-      
-    working_directory: ~/repo
-    
+    <<: *default
     steps:
       - checkout
       - run:

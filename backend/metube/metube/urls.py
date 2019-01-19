@@ -14,6 +14,6 @@ urlpatterns = [
     path('api/', include([
         path('auth/', include('metube.authentication.api_urls')),
         path('blog/', include('metube.blog.api_urls')),
-        path('gallery/', include('metube.gallery.api_urls')),
+        # path('gallery/', include('metube.gallery.api_urls')),
     ])),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

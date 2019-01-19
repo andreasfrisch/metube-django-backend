@@ -53,6 +53,7 @@ def login(request):
             'error': 'Invalid Method'
         }, status=405)
 
+@csrf_exempt
 @token_required
 def logout(request):
     """
