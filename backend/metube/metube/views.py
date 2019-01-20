@@ -21,7 +21,7 @@ class RootPageView(View):
                 <p>Environment: %s</p>
             </body>
             </html>
-        ''' % ENVIRONMENT)
+        ''' % ENVIRONMENT, VERSION)
         return HttpResponse(response_text)
 
 def home(request):
