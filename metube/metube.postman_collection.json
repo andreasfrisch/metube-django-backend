@@ -1,0 +1,387 @@
+{
+	"info": {
+		"_postman_id": "4e234f69-8c48-42fc-9ceb-83bc1d7b1af8",
+		"name": "Metube",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "54d821a3-980a-4a6e-b1ff-74e39fecc56a",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"access_token\", jsonData.token);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"{{username}}\",\n\t\"password\": \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/login/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "54d821a3-980a-4a6e-b1ff-74e39fecc56a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/logout/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "54d821a3-980a-4a6e-b1ff-74e39fecc56a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/verify/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"verify",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Blog",
+			"item": [
+				{
+					"name": "newest",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/api/blog/posts/newest",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"blog",
+								"posts",
+								"newest"
+							]
+						},
+						"description": "Get newest blog post"
+					},
+					"response": []
+				},
+				{
+					"name": "by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/api/blog/posts/id/2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"blog",
+								"posts",
+								"id",
+								"2"
+							]
+						},
+						"description": "Get newest blog post"
+					},
+					"response": []
+				},
+				{
+					"name": "by slug",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/api/blog/posts/test-a-longer-slug",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"blog",
+								"posts",
+								"test-a-longer-slug"
+							]
+						},
+						"description": "Get newest blog post"
+					},
+					"response": []
+				},
+				{
+					"name": "all posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/api/blog/posts/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"blog",
+								"posts",
+								""
+							]
+						},
+						"description": "Get all blog posts"
+					},
+					"response": []
+				},
+				{
+					"name": "new post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Test\",\n\t\"author\": \"{{username}}\",\n\t\"date_unix_seconds\": 1546344000,\n\t\"tags\": \"test, rant\",\n\t\"paragraphs\": [\n\t\t{\n\t\t\t\"type\": \"text\",\n\t\t\t\"content\": \"This is a test for a very short blog post.\"\n\t\t},\n\t\t{\n\t\t\t\"type\": \"text\",\n\t\t\t\"content\": \"It has multiple paragraphs.\"\n\t\t}\n\n\t]\n}\n"
+						},
+						"url": {
+							"raw": "{{host}}/api/blog/posts/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"blog",
+								"posts",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gallery",
+			"item": [
+				{
+					"name": "add image",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": null
+								},
+								{
+									"key": "title",
+									"value": "sprues",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "test,hest",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/gallery/images",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"gallery",
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all images",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/javascript"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{host}}/api/gallery/images/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"gallery",
+								"images",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/status",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

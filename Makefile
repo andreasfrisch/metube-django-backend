@@ -1,22 +1,19 @@
 All: start
 
 build:
-	docker build -t metube-api backend/
+	docker build -t metube-api metube/
 	docker build -t metube-nginx nginx/
 
-test:
-	python backend/metube/manage.py migrate --settings=metube.settings.test
-	cd backend/metube && python manage.py test --settings=metube.settings.test
-
 start: build
-	docker-compose up -d
+	docker-compose up -d nginx
+	docker-compose exec api python manage.py makemigrations
 	docker-compose exec api python manage.py migrate
 
 stop:
 	docker-compose down
 
-development:
-	cd backend/metube && python manage.py makemigrations --settings=metube.settings.test
-	cd backend/metube && python manage.py migrate --settings=metube.settings.test
-	cd backend/metube && python manage.py createsuperuser --settings=metube.settings.test
-	cd backend/metube && python manage.py runserver --settings=metube.settings.test
+test: build
+	docker-compose up test
+
+dev: start
+	docker-compose exec api python manage.py loaddata fixture.json
