@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.generic.base import View
 from django.shortcuts import render
 
-from metube.settings.settings import VERSION, ENVIRONMENT
+from metube.settings import VERSION, DEBUG, ENVIRONMENT
 
 
 class RootPageView(View):
@@ -18,10 +18,11 @@ class RootPageView(View):
             <body>
                 <h1>Greetings to the world</h1>
                 <h2>Version: %s</h2>
+                <p>Debug: %s</p>
                 <p>Environment: %s</p>
             </body>
             </html>
-        ''' % (ENVIRONMENT, VERSION))
+        ''' % (ENVIRONMENT, DEBUG, VERSION))
         return HttpResponse(response_text)
 
 def home(request):

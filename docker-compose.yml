@@ -2,35 +2,29 @@ version: '2.1'
 
 services:
   nginx:
-    # build: ./nginx
-    # restart: always
     image: metube-nginx:latest
     ports:
       - "80:80"
     depends_on:
       - api
-
+  
   api:
-    # build: ./backend
-    # restart: always
     image: metube-api:latest
-    # command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn mydjango.wsgi -b 0.0.0.0:8000"
+    environment:
+      - METUBE_ENVIRONMENT=development
+      - METUBE_DEBUG=TRUE
+      - METUBE_SECRET_KEY=ThisIsANotSoSecretSecretKey
+      - METUBE_ALLOWED_HOSTS=api
+      - METUBE_DATABASES="{'default':{'ENGINE':'django.db.backends.mysql','NAME':'metube','USER':'metube','PASSWORD':'metube','HOST':'database','PORT':'3306'}}"
     depends_on:
       database:
         condition: service_healthy
-
-    # volumes:
-      # - ./src:/src
-    # expose:
-      # - "8000"
-    # ports:
-      # - "8000:8000"
-
+   
   database:
     image: mysql:5.7.24
     environment:
-      - MYSQL_USER=mysql
-      - MYSQL_PASSWORD=mysql
+      - MYSQL_USER=metube
+      - MYSQL_PASSWORD=metube
       - MYSQL_DATABASE=metube
       - MYSQL_ROOT_PASSWORD=itsasecret
     ports:
@@ -39,3 +33,11 @@ services:
         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
         timeout: 20s
         retries: 10
+  
+  test:
+    image: metube-api:latest
+    environment:
+      - METUBE_ENVIRONMENT=test
+      - METUBE_DEBUG=TRUE
+      - METUBE_SECRET_KEY=ThisIsANotSoSecretSecretTestKey
+    entrypoint: python manage.py test
