@@ -13,7 +13,7 @@ stop:
 	docker-compose down
 
 test: build
-	docker-compose up test
+	docker-compose up --abort-on-container-exit test
 
 dev: start
 	docker-compose exec api python manage.py loaddata fixture.json
