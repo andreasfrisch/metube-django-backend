@@ -8,6 +8,7 @@ jobs:
   build:
     <<: *default
     steps:
+      - setup_remote_docker
       - checkout
       - restore_cache:
           keys:
@@ -24,6 +25,7 @@ jobs:
   test:
     <<: *default
     steps:
+      - setup_remote_docker
       - checkout
       - restore_cache:
           keys:
