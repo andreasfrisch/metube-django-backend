@@ -16,9 +16,3 @@ class ArchiveTestCase(TestCase):
     def test_archive_length(self):
         archive = Post.objects.all()
         self.assertEqual(len(archive), 1)
-    def test_archive_length2(self):
-        archive = Post.objects.all()
-        self.assertEqual(len(archive), 1)
-    def test_archive_length3(self):
-        archive = Post.objects.all()
-        self.assertEqual(len(archive), 2)
