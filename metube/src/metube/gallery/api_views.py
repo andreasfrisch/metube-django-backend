@@ -13,7 +13,6 @@ from metube.gallery.models import Image
 from metube.utils import token_required
 from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt #TODO: is this required?
 @token_required
 def create_image(request):
     """
@@ -27,12 +26,11 @@ def create_image(request):
                 tags = request.POST.get('tags'),
             ).save()
         except Exception as e:
-            print("Error saving new image: %s" % e) # TODO 01: Logging
+            print("Error saving new image: %s" % e)
             return HttpResponse(status=500)
         return HttpResponse(status=200)
     return HttpResponse(status=405)
 
-@csrf_exempt #TODO: is this required?
 def images(request):
     """
     Get a list of all gallery images as json

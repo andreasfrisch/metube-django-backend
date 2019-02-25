@@ -8,7 +8,7 @@ def paragraph_string_to_dict(paragraph):
     """
     Convert paragraph string to dictionary
     """
-    ptype, pcontent = paragraph.split(DELIMITER) #TODO: formating symbol
+    ptype, pcontent = paragraph.split(DELIMITER)
     return {
         "type": ptype,
         "content": pcontent

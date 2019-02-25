@@ -9,7 +9,6 @@ from django.http import HttpResponse
 from metube.authentication.models import Token
 from metube.utils import json_response, token_required
 
-# @csrf_exempt
 def login(request):
     """
     Login user and return valid access token
@@ -23,18 +22,17 @@ def login(request):
             try:
                 user = auth.authenticate(username=username, password=password)
             except Exception as exception:
-                print(exception) #TODO 01: logging
+                print(exception)
             if user is not None:
                 if user.is_active:
                     try:
                         token, _ = Token.objects.get_or_create(user=user)
-                        #TODO: 04: validate token expiry
                         return json_response({
                             'token': token.token,
                             'username': user.username
                         })
                     except Exception as exception:
-                        print(exception) # TODO 01: logging
+                        print(exception)
                 else:
                     return json_response({
                         'error': 'Invalid User'
@@ -54,7 +52,6 @@ def login(request):
             'error': 'Invalid Method'
         }, status=405)
 
-# @csrf_exempt
 @token_required
 def logout(request):
     """

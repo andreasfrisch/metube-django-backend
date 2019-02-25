@@ -35,7 +35,6 @@ def token_required(func):
                     token = tokens[1]
                     try:
                         request.token = Token.objects.get(token=token)
-                        #TODO: 04: validate token expiry and content
                         return func(request, *args, **kwargs)
                     except Token.DoesNotExist:
                         return json_response({
@@ -45,6 +44,6 @@ def token_required(func):
                 'error': 'Invalid Header'
             }, status=401)
         except Exception as exception:
-            print(exception) # TODO 01: using logging framework instead
+            print(exception)
 
     return inner
