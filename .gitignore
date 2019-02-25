@@ -1,2 +1,3 @@
 *.pyc
 venv/
+metube/src/docs/*.html
