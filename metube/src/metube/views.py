@@ -8,7 +8,6 @@ from metube.settings import VERSION, DEBUG, ENVIRONMENT
 
 
 class RootPageView(View):
-
     def dispatch(request, *args, **kwargs):
         response_text = textwrap.dedent('''\
             <html>

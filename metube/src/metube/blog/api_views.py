@@ -53,7 +53,7 @@ def create_post(request):
         return HttpResponse(status=200)
     return HttpResponse(status=405)
 
-@csrf_exempt
+# @csrf_exempt
 def posts(request):
     """
     Get a list of all blog posts as JSON

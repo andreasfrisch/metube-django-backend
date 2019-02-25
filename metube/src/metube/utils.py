@@ -35,6 +35,7 @@ def token_required(func):
                     token = tokens[1]
                     try:
                         request.token = Token.objects.get(token=token)
+                        #TODO: 04: validate token expiry and content
                         return func(request, *args, **kwargs)
                     except Token.DoesNotExist:
                         return json_response({

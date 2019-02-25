@@ -14,96 +14,74 @@ traits:
   authorized:
     description: Request requires authorization.
     responses:
-      403:
-        body:
-          examples:
-            1005: |
-              {
-                "code": "users-1005",
-                "msg": "Unauthorized access to user {userId} by user {authorizedUserId} for client {client}"
-              }
       401:
         body:
-          examples:
-            1008: |
-              {
-                "code": "users-1008",
-                "msg": "Provided access token is expired - please log in again."
-              }
+          examples: [
+            {
+              "error": "Invalid Header"
+            },
+            {
+              "error": "Token not found"
+            }
+          ]
 
 types:
-  profileDTO:
+  loginDTO:
     type: object
     properties:
-      preferredName?: string
-      fullName?: string
-      firstName?: string
-      lastName?: string
-      birthDate?: birthDateDTO
-      gender?: string
-      sex?:
-        enum: ["male", "intersex", "female"]
-      heightInCm?: integer
-      weightInKg?:
-        type: number
-        format: double
-      address?: addressDTO
-      timezone?: string
+      username: string
+      password: string
+  loginResponseDTO:
+    type: object
+    properties:
+      username: string
+      token: string
 
-/v1/users/{userId}/properties:
-  get:
-    is: [authorized, userid]
+/login:
+  post:
+    is: [authorized]
     securedBy: [auth]
-    description: Get user properties for {userId}
-    responses:
-      200:
-        body:
-          example: |
-            {
-              "role": "doctor",
-              "status":"invited"
-            }
-  put:
-    is: [authorized, userid]
-    securedBy: [auth]
-    description: Overwrite user properties for {userId}
+    description: Login using supplied credentials
     body:
+      type: loginDTO
       example: |
         {
-          "role": "doctor",
-          "status": "activated"
+          "username": "some-username",
+          "password": "MyVerySecretSecret",
         }
     responses:
       200:
+        body:
+          type: loginResponseDTO
+          example: |
+            {
+              "username": "some-username",
+              "token": "47a46f84e986440f5fd462f6f7a2cd775cca9905"
+            }
+      400:
+        example: |
+          {
+            "error": "Invalid Header"
+          }
 
-  delete:
+
+/logout:
+  post:
+    is: [authorized]
+    securedBy: [auth]
+    description: Logout user matching supplied access token
+    responses:
+      200:
+        example: |
+          {
+            "error": "Invalid Header"
+          }
+
+/verify:
+  get:
     is: [authorized, userid]
     securedBy: [auth]
-    description: Delete all user properties for {userId}
+    description: Verifies supplied authentication
     responses:
       200:
 
-  /{property}:
-    get:
-      is: [authorized, userid]
-      securedBy: [auth]
-      description: Get value of specific user properties for {userId}
-      responses:
-        200:
-          body:
-            example: |
-              {
-                "role": "doctor"
-              }
-
-    put:
-      is: [authorized, userid]
-      securedBy: [auth]
-      description: Set value of specific property for {userId}
-      body:
-        example: |
-          {
-            "status": "activated"
-          }
-      responses:
-        200:
