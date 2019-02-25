@@ -10,33 +10,20 @@ jobs:
     steps:
       - setup_remote_docker
       - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "metube/requirements.txt" }}
       - run:
-          name: build images
+          name: Build Phase
           command: |
             make build
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "metube/requirements.txt" }}
   
   test:
     <<: *default
     steps:
       - setup_remote_docker
       - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "metube/requirements.txt" }}
       - run:
-          name: run tests
+          name: Test Phase
           command: |
             make test
-      - store_artifacts:
-          path: test-reports
-          destination: test-reports
   
 workflows:
   version: 2
