@@ -36,7 +36,6 @@ def newest(request):
         status=200
     )
 
-@token_required
 def create_post(request):
     """
     Create new blog post from JSON
@@ -53,7 +52,6 @@ def create_post(request):
         return HttpResponse(status=200)
     return HttpResponse(status=405)
 
-@csrf_exempt
 def posts(request):
     """
     Get a list of all blog posts as JSON

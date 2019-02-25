@@ -44,6 +44,6 @@ def token_required(func):
                 'error': 'Invalid Header'
             }, status=401)
         except Exception as exception:
-            print(exception) # TODO 01: using logging framework instead
+            print(exception)
 
     return inner

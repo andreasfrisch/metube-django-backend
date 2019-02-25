@@ -11,7 +11,6 @@ def generate_access_token():
     """
     Generate access token
     """
-    #TODO 02: use proper JWT library
     return binascii.hexlify(os.urandom(20)).decode()
 
 class Token(models.Model):
