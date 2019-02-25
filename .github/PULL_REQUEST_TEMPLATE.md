@@ -5,4 +5,9 @@ Quality Assurance
  - [ ] New files introduced: Naming conventions and locations followed
  - [ ] README has been updated as needed
  - [ ] Test quality: Added/modified code is covered with meaningful descriptions
- - [ ] New endpoints are documented and available in the postman export
+ - [ ] New endpoints are documented
+ - - [ ] RAML
+ - - [ ] Postman
+ - [ ] New subprojects are documented
+ - - [ ] Documentation portal
+ - - [ ] `make apidocs` updated

@@ -17,7 +17,7 @@ SECRET_KEY = os.environ["METUBE_SECRET_KEY"]
 ENVIRONMENT = os.environ["METUBE_ENVIRONMENT"]
 
 DEBUG = False if not "METUBE_DEBUG" in os.environ else os.environ["METUBE_DEBUG"] == "TRUE"
-ALLOWED_HOSTS = os.environ.get("METUBE_ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = os.environ.get("METUBE_ALLOWED_HOSTS", "localhost").split(",")
 
 DEFAULT_DATABASES = {
     'default': {
@@ -73,7 +73,7 @@ ROOT_URLCONF = 'metube.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'docs')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
