@@ -1,13 +1,14 @@
-All: start
+All: start-local
 
 build:
 	docker build -t metube-api metube/
 	docker build -t metube-nginx nginx/
 
-start: apidocs build
+start-local: apidocs test
 	docker-compose up -d nginx
 	docker-compose exec api python manage.py makemigrations
 	docker-compose exec api python manage.py migrate
+	docker-compose exec api python manage.py collectstatic --noinput
 
 apidocs:
 	docker run --rm -v $(CURDIR)/metube/src:/raml mattjtodd/raml2html -i raml/metube/authentication/auth_api.raml -o raml/docs/auth_api.html
@@ -18,5 +19,5 @@ stop:
 test: build
 	docker-compose run test
 
-dev: start
+dev: start-local
 	docker-compose exec api python manage.py loaddata fixture.json
