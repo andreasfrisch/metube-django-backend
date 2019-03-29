@@ -25,6 +25,31 @@ jobs:
           command: |
             make test
   
+  push-images:
+    <<: *default
+    steps:
+      - checkout
+      - setup-remote-docker
+      - run:
+         name: install aws
+         command: |
+           curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+           unzip awscli-bundle.zip
+           sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+      - run:
+         name: "Log in to AWS ECR"
+         command: eval $(aws ecr get-login --region eu-central-1 --no-include-email)
+      - run:
+          name: Build docker containers and push it
+          command: |
+            make build
+            
+            docker tag metube-api:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/api:latest
+            docker push 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/api:latest
+            
+            docker tag metube-nginx:latest 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/nginx:latest
+            docker push 624540041426.dkr.ecr.eu-central-1.amazonaws.com/metube/nginx:latest
+
 workflows:
   version: 2
   build_and_test:
@@ -33,3 +58,11 @@ workflows:
       - test:
           requires:
             - build
+      - push-images:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+
