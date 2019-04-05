@@ -15,7 +15,9 @@ services:
       - METUBE_DEBUG=TRUE
       - METUBE_SECRET_KEY=ThisIsANotSoSecretSecretKey
       - METUBE_ALLOWED_HOSTS=api
-      - METUBE_DATABASES="{'default':{'ENGINE':'django.db.backends.mysql','NAME':'metube','USER':'metube','PASSWORD':'metube','HOST':'database','PORT':'3306'}}"
+      - METUBE_DATABASE_URL=mysql://metube:metube@database:3306/metube
+    ports:
+      - 8000:8000
     depends_on:
       database:
         condition: service_healthy
@@ -28,7 +30,7 @@ services:
       - MYSQL_DATABASE=metube
       - MYSQL_ROOT_PASSWORD=itsasecret
     ports:
-      - 19090:3306
+      - 3306:3306
     healthcheck:
         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
         timeout: 20s
