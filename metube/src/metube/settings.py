@@ -4,6 +4,7 @@ Django settings for metube project.
 
 import os
 import sys
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 VERSION = 0.2
@@ -19,17 +20,13 @@ ENVIRONMENT = os.environ["METUBE_ENVIRONMENT"]
 DEBUG = False if not "METUBE_DEBUG" in os.environ else os.environ["METUBE_DEBUG"] == "TRUE"
 ALLOWED_HOSTS = os.environ.get("METUBE_ALLOWED_HOSTS", "localhost").split(",")
 
-DEFAULT_DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'metube.db'
     }
 }
-DATABASES = (
-  json.loads(os.environ["METUBE_DATABASES"])
-  if "APP_DATABASES" in os.environ
-  else DEFAULT_DATABASES
-)
+DATABASES['default'] = dj_database_url.parse(os.environ.get('METUBE_DATABASE_URL', 'sqlite://metube.db'))
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'

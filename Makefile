@@ -6,9 +6,6 @@ build:
 
 start-local: apidocs test
 	docker-compose up -d nginx
-	docker-compose exec api python manage.py makemigrations
-	docker-compose exec api python manage.py migrate
-	docker-compose exec api python manage.py collectstatic --noinput
 
 apidocs:
 	docker run --rm -v $(CURDIR)/metube/src:/raml mattjtodd/raml2html -i raml/metube/authentication/auth_api.raml -o raml/docs/auth_api.html
