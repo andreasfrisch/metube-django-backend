@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/andreasfrisch/metube-django-backend.svg?style=svg)](https://circleci.com/gh/andreasfrisch/metube-django-backend)
+
 # Metube Django Backend
 This is a Django powered monolithic backend for the metube project.
 This acts solely as an API and most frontend work is handled elsewhere.
