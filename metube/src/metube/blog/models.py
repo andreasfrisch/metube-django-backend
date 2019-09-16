@@ -6,8 +6,16 @@ import time
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils import timezone
+from enum import Enum
 
-from metube.blog.post_manipulation import paragraph_string_to_dict
+
+#from metube.blog.post_manipulation import paragraph_string_to_dict
+
+class ParagraphType(Enum):
+    TXT = "Text"
+    IMG = "Image"
+    COD = "Code"
+
 
 class Post(models.Model):
     """
@@ -18,7 +26,6 @@ class Post(models.Model):
     tags = models.CharField(max_length=200)
     author = models.CharField(max_length=100)
     date = models.DateField(default=timezone.now)
-    content = models.TextField()
 
     def __str__(self):
         return self.title
@@ -38,7 +45,7 @@ class Post(models.Model):
             self.slug = slugify(self.title)
         super(Post, self).save(*args, **kwargs)
 
-    def as_dict(self, with_content=True):
+    def as_dict(self):
         """
         Convert post object to dictionary
         """
@@ -50,9 +57,35 @@ class Post(models.Model):
             "author": self.author,
             "date_unix_seconds": int(time.mktime(self.date.timetuple())),
         }
-        if with_content:
-            post["paragraphs"] = [paragraph_string_to_dict(p) for p in self.content.split('\n\n')]
         return post
 
     def __unicode__(self):
         return self.title
+
+
+class Paragraph(models.Model):
+    """
+    A single paragraph for a blog post
+    """
+    content = models.TextField()
+    content_type = models.CharField(
+        max_length = 3,
+        choices = [(tag.name, tag.value) for tag in ParagraphType]
+    )
+    order = models.IntegerField()
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    def as_dict(self, with_content=True):
+        """
+        Convert paragraph object to dictionary
+        """
+        paragraph = {
+            "id": self.id,
+            "content": self.content,
+            "type": self.content_type,
+            "order": self.order
+        }
+        return paragraph
+
+    def __str__(self):
+        return "%s--%d" % (self.post.slug, self.order)

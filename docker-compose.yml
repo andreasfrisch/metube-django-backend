@@ -7,7 +7,7 @@ services:
       - "80:80"
     depends_on:
       - api
-  
+
   api:
     image: metube-api:latest
     environment:
@@ -21,7 +21,7 @@ services:
     depends_on:
       database:
         condition: service_healthy
-   
+
   database:
     image: mysql:5.7.24
     environment:
@@ -35,11 +35,12 @@ services:
         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
         timeout: 20s
         retries: 10
-  
+
   test:
     image: metube-api:latest
     environment:
       - METUBE_ENVIRONMENT=test
       - METUBE_DEBUG=TRUE
       - METUBE_SECRET_KEY=ThisIsANotSoSecretSecretTestKey
-    entrypoint: python manage.py test
+    entrypoint: ./docker_test_entrypoint.sh
+

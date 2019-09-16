@@ -9,10 +9,10 @@ class ArchiveTestCase(TestCase):
         Post.objects.create(
             title="Test 1",
             tags="test",
-            author="Testing Man",
-            content="This is a test"
+            author="Testing Man"
         )
-    
+
     def test_archive_length(self):
         archive = Post.objects.all()
         self.assertEqual(len(archive), 1)
+

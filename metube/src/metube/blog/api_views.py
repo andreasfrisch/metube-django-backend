@@ -4,27 +4,33 @@ Request handlers for blog API
 
 import json
 
+from datetime import datetime
+from typing import Dict, List
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-from datetime import datetime
 from metube.utils import json_response, token_required
-from metube.blog.models import Post
-from metube.blog.post_manipulation import paragraphs_json_to_string
+from metube.blog.models import Post, Paragraph
+
+def _complete_post_as_dict(post: Post) -> Dict:
+    post_dict = post.as_dict()
+    post_paragraphs: List[Paragraph] = Paragraph.objects.filter(post=post)
+    post_dict["paragraphs"] = [p.as_dict() for p in post_paragraphs]
+    return post_dict
 
 def specific_post(request, slug):
     """
     Get one blog post as JSON based on slug
     """
     post = get_object_or_404(Post, slug=slug)
-    return json_response(post.as_dict())
+    return json_response(_complete_post_as_dict(post))
 
-def specific_post_by_id(request, id):
+def specific_post_by_id(request, pid):
     """
     Get one blog post as JSON based on id
     """
-    post = get_object_or_404(Post, id=id)
-    return json_response(post.as_dict())
+    post = get_object_or_404(Post, id=pid)
+    return json_response(_complete_post_as_dict(post))
 
 def newest(request):
     """
@@ -42,13 +48,20 @@ def create_post(request):
     """
     if request.method == "POST":
         post_data = json.loads(request.body)
-        Post(
+        post = Post(
             title=post_data['title'],
             author=post_data['author'],
             date=datetime.fromtimestamp(post_data['date_unix_seconds']),
-            tags=",".join(post_data['tags']),
-            content=paragraphs_json_to_string(post_data['paragraphs'])
-        ).save()
+            tags=",".join(post_data['tags'])
+        )
+        post.save()
+        for paragraph in post_data["paragraphs"]:
+            Paragraph(
+                content=paragraph["content"],
+                type=paragraph["type"],
+                order=paragraph["order"],
+                post=post
+            ).save()
         return HttpResponse(status=200)
     return HttpResponse(status=405)
 

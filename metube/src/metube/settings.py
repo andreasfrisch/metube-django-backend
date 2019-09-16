@@ -7,12 +7,12 @@ import sys
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-VERSION = 0.2
+VERSION = 0.3
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# 
+#
 # Environmental Settings
-# 
+#
 
 SECRET_KEY = os.environ["METUBE_SECRET_KEY"]
 ENVIRONMENT = os.environ["METUBE_ENVIRONMENT"]
@@ -35,10 +35,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# 
+#
 # Base Settings
 # Environment agnostic
-# 
+#
 
 # Application definition
 WSGI_APPLICATION = 'metube.wsgi.application'
