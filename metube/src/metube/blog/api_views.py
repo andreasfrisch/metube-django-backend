@@ -9,8 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from datetime import datetime
 from metube.utils import json_response, token_required
-from metube.blog.models import Post
-from metube.blog.post_manipulation import paragraphs_json_to_string
+from metube.blog.models import Post, Paragraph
 
 def specific_post(request, slug):
     """
@@ -36,19 +35,27 @@ def newest(request):
         status=200
     )
 
+@token_required
 def create_post(request):
     """
     Create new blog post from JSON
     """
     if request.method == "POST":
         post_data = json.loads(request.body)
-        Post(
+        post = Post(
             title=post_data['title'],
             author=post_data['author'],
             date=datetime.fromtimestamp(post_data['date_unix_seconds']),
             tags=",".join(post_data['tags']),
-            content=paragraphs_json_to_string(post_data['paragraphs'])
-        ).save()
+        )
+        post.save()
+        for paragraph in post_data['paragraphs']:
+            Paragraph(
+                post = post,
+                order = paragraph['order'],
+                type = paragraph['type'],
+                content = paragraph['content'],
+            ).save()
         return HttpResponse(status=200)
     return HttpResponse(status=405)
 

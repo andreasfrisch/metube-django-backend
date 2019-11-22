@@ -15,4 +15,4 @@ RUN pip install --no-cache-dir -r /requirements.txt
 
 COPY . /metube
 
-ENTRYPOINT ["./docker_entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
