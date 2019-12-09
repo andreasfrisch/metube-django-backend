@@ -21,12 +21,8 @@ DEBUG = False if not "METUBE_DEBUG" in os.environ else os.environ["METUBE_DEBUG"
 ALLOWED_HOSTS = os.environ.get("METUBE_ALLOWED_HOSTS", "localhost").split(",")
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'metube.db'
-    }
+    "default": dj_database_url.parse(os.environ.get("METUBE_DATABASE_URL", "sqlite://metube.db"))
 }
-DATABASES['default'] = dj_database_url.parse(os.environ.get('METUBE_DATABASE_URL', 'sqlite://metube.db'))
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'

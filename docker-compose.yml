@@ -14,7 +14,7 @@ services:
       - METUBE_ENVIRONMENT=development
       - METUBE_DEBUG=TRUE
       - METUBE_SECRET_KEY=ThisIsANotSoSecretSecretKey
-      - METUBE_ALLOWED_HOSTS=api
+      - METUBE_ALLOWED_HOSTS=*
       - METUBE_DATABASE_URL=mysql://metube:metube@database:3306/metube
     ports:
       - 8000:8000
@@ -42,4 +42,4 @@ services:
       - METUBE_ENVIRONMENT=test
       - METUBE_DEBUG=TRUE
       - METUBE_SECRET_KEY=ThisIsANotSoSecretSecretTestKey
-    entrypoint: python manage.py test
+    entrypoint: ./test-entrypoint.sh
