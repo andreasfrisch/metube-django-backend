@@ -36,10 +36,16 @@ def newest(request):
     """
     Get newest blog post as JSON
     """
-    post = Post.objects.all().order_by('-date')[0]
-    return json_response(
-        {"slug": post.slug},
-        status=200
+    posts = Post.objects.all().order_by('-date')
+    if len(posts) == 0:
+        return json_response(
+            {},
+            status=204
+        )
+    else:
+        return json_response(
+            _complete_post_as_dict(posts[0]),
+            status=200
     )
 
 def create_post(request):
@@ -70,7 +76,7 @@ def posts(request):
     Get a list of all blog posts as JSON
     """
     if request.method == "GET":
-        return json_response([post.as_dict(with_content=False) for post in Post.objects.all()])
+        return json_response([post.as_dict() for post in Post.objects.all()])
     elif request.method == "POST":
         return create_post(request)
     else:
