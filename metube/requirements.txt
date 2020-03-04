@@ -1,4 +1,4 @@
-Django==2.0.13
+Django==2.2.10
 boto3==1.7.67
 django-storages==1.7.1
 gunicorn==19.7.1
@@ -10,3 +10,4 @@ pinocchio==0.4.2
 nose==1.3.7
 whitenoise==3.3.1
 dj-database-url==0.5.0
+
