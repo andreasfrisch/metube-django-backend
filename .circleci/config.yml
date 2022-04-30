@@ -1,6 +1,6 @@
 setup: &default
     docker:
-      - image: circleci/python:3.6.1
+      - image: circleci/python:3.10.1
     working_directory: ~/repo
 
 version: 2
